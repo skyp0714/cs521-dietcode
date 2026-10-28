@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cs521-dietcode"
+version = "0.1.0"
+description = "CS 521: DietCode-inspired optimization of dynamic GEMM and BMM in PyTorch"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+# Install a hardware-appropriate PyTorch wheel first; use its matching Triton.
+torch = ["torch>=2.5,<3"]
+
+[project.scripts]
+dietcode-bench = "dietcode.benchmark:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

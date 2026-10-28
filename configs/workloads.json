@@ -1,0 +1,10 @@
+[
+  {"name": "gemm-square", "split": "train", "op": "gemm", "m": 256, "n": 256, "k": 256},
+  {"name": "gemm-rectangular", "split": "train", "op": "gemm", "m": 128, "n": 512, "k": 256},
+  {"name": "gemm-irregular", "split": "train", "op": "gemm", "m": 127, "n": 255, "k": 129},
+  {"name": "bmm-regular", "split": "train", "op": "bmm", "batch": 4, "m": 128, "n": 128, "k": 64},
+  {"name": "bmm-irregular", "split": "train", "op": "bmm", "batch": 3, "m": 63, "n": 129, "k": 65},
+  {"name": "gemm-unseen-square", "split": "unseen", "op": "gemm", "m": 384, "n": 384, "k": 384},
+  {"name": "gemm-unseen-irregular", "split": "unseen", "op": "gemm", "m": 193, "n": 321, "k": 257},
+  {"name": "bmm-unseen-irregular", "split": "unseen", "op": "bmm", "batch": 5, "m": 97, "n": 161, "k": 81}
+]
