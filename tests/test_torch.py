@@ -71,6 +71,23 @@ class TorchTests(unittest.TestCase):
             self.assertGreater(row["latency_median_ms"], 0)
             self.assertEqual(len(row["samples_ms"]), 3)
 
+    def test_cuda_benchmark_resolves_default_device_and_checks_results(self):
+        if not self.torch.cuda.is_available():
+            self.skipTest("CUDA device required")
+        import json
+        from pathlib import Path
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "cuda.json"
+            self.assertEqual(main(["--device", "cuda", "--dtype", "float16", "--warmup", "1",
+                                   "--repeats", "3", "--output", str(output)]), 0)
+            result = json.loads(output.read_text())
+        self.assertEqual(result["metadata"]["device"], f"cuda:{self.torch.cuda.current_device()}")
+        self.assertEqual(result["metadata"]["latency_metric"], "cuda_event_elapsed")
+        self.assertEqual(len(result["results"]), 8)
+        self.assertTrue(all(row["correct"] for row in result["results"]))
+
 
 if __name__ == "__main__":
     unittest.main()

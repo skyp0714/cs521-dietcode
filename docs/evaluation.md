@@ -11,8 +11,10 @@
 | Shared-model joint tuning + dispatcher | Pending actual kernels/model | Team method |
 | Team method inside TorchInductor | Pending Person 3 integration | Compiler integration result |
 
-CPU execution validates the harness. GPU correctness, timing and integration
-must be validated on the target GPU before claiming performance results.
+CPU execution validates the harness. The initial eight shapes also passed
+correctness checks in all three implemented modes on the server's H100 NVL
+with float16 inputs. Final-workload GPU correctness, timing and integration
+still require validation before claiming performance results.
 
 ## Measurements
 

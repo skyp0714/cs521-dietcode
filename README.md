@@ -15,9 +15,11 @@ a Python dispatcher that accepts kernel candidates and a predictor, and CPU CI.
 Train and unseen shape sets are disjoint. The eight small workloads are for
 smoke testing; extend them for final performance experiments.
 
-Initial local validation (October 27, 2026): Python 3.12.3 / PyTorch 2.5.1+cpu,
-18 tests passed, and all eight shapes passed correctness checks with each of
-the three CPU baseline modes. GPU validation remains pending.
+Local validation (October 27, 2026): Python 3.12.3, PyTorch 2.5.1+cpu for CPU
+checks, and PyTorch 2.5.1+cu124 / Triton 3.1.0 on an NVIDIA H100 NVL for GPU
+checks. All 19 tests passed in the GPU environment. All eight shapes passed
+correctness checks with each of the three baseline modes on both CPU (float32)
+and GPU (float16). These small smoke runs do not establish performance gains.
 
 **Pending:** Triton kernels and per-shape autotuning, a learned cost model,
 joint autotuning, and integration of selected kernels into TorchInductor.
@@ -43,10 +45,11 @@ python -m unittest discover -s tests -v
 dietcode-bench --device cpu --backend eager --warmup 1 --repeats 3 --output results/cpu-smoke.json
 ```
 
-For a compatible NVIDIA GPU, replace the CPU installation command with:
+For a compatible NVIDIA GPU, use a separate environment or replace the CPU
+build with the explicitly selected CUDA build:
 
 ```bash
-python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu124
+python -m pip install torch==2.5.1+cu124 --index-url https://download.pytorch.org/whl/cu124
 python -m pip install -e .
 python -c "import torch; print(torch.__version__, torch.version.cuda, torch.cuda.is_available())"
 ```
@@ -54,7 +57,9 @@ python -c "import torch; print(torch.__version__, torch.version.cuda, torch.cuda
 Let the PyTorch CUDA wheel install its matching Triton dependency. See
 [official version-specific installation commands](https://docs.pytorch.org/get-started/previous-versions/)
 if your GPU needs a different build. The GPU path must be tested on the team's
-target machine; CPU smoke tests do not validate GPU performance.
+target machine; CPU smoke tests do not validate GPU performance. For the project
+server's H100 and its separate `.venv-gpu` environment, see
+[GPU setup and the one-command baseline runner](docs/gpu-setup.md).
 
 To inspect workloads without installing PyTorch:
 
@@ -116,6 +121,8 @@ and [Person 3's Korean checklist](docs/person3-plan.ko.md) before implementing.
 Use feature branches and pull requests into `main`. Keep generated measurements
 under `results/` (ignored by Git); commit selected final data explicitly once
 reviewed. Original course/team documents are kept local and summarized in `docs/`.
+The repository is public, so teammates can clone it immediately. Direct push
+access requires adding their GitHub accounts as collaborators.
 
 ## Acknowledgment
 

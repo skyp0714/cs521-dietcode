@@ -60,6 +60,8 @@ def run(args, workloads):
     if device.type == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("CUDA is unavailable. Use --device cpu --backend eager for a smoke test.")
     if device.type == "cuda":
+        # PyTorch 2.5 requires an explicit index for set_device and metadata APIs.
+        device = torch.device("cuda", torch.cuda.current_device())
         torch.cuda.set_device(device)
     torch.manual_seed(args.seed)
     torch.set_num_threads(args.cpu_threads)
