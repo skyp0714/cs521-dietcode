@@ -16,7 +16,9 @@ must be finite and nonnegative. Keep one trained model per target environment.
 
 ## TODO
 
-- [ ] Person 1: expose correct GEMM/BMM candidates through `supports` and `launch`.
+- [x] Person 1: expose initial GEMM/BMM candidates through `supports` and `launch`
+  using `dietcode.kernels.make_candidates()`; see [supported inputs](kernels.md).
+- [ ] Person 1: validate all candidates on H100 (GPU tests provided).
 - [ ] Person 2: train the predictor on candidate timings from train shapes; freeze it before unseen evaluation.
 - [ ] Person 3: connect both to `dispatch.py`, then benchmark the dispatched method in `benchmark.py`.
 - [ ] Person 3: add TorchInductor integration after Python dispatch works.
